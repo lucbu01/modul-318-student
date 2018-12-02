@@ -13,38 +13,52 @@ namespace SwissTransportApp
 {
     public partial class MainWindow : Form
     {
+        private DataGridViewTextBoxColumn clmName = new DataGridViewTextBoxColumn();
+        private DataGridViewTextBoxColumn clmGoal = new DataGridViewTextBoxColumn();
 
         private ITransport transport = new Transport();
         public MainWindow()
         {
             InitializeComponent();
-            
+            this.clmName.HeaderText = "Name";
+            this.clmName.Name = "clmName";
+            this.clmName.ReadOnly = true;
+            this.clmGoal.HeaderText = "Ziel";
+            this.clmGoal.Name = "clmGoal";
+            this.clmGoal.ReadOnly = true;
         }
 
         private void btnSearchConnections_Click(object sender, EventArgs e)
         {
-            tblShowConnections.Rows.Clear();
-            
-            Connections connections = transport.GetConnections(txbSelectStartStation.Text, txbSelectEndStation.Text);
-            
-            foreach(Connection connection in connections.ConnectionList) {
-                string departure = Convert.ToDateTime(connection.From.Departure).ToString(@"dd\.MM\.yy \u\m HH\:mm");
-                int durationDays = Convert.ToInt32(connection.Duration.Substring(0, 2));
-                int durationHours = Convert.ToInt32(connection.Duration.Substring(3, 2));
-                int durationMinutes = Convert.ToInt32(connection.Duration.Substring(6, 2));
-                List<string> duration = new List<string>();
-                if (durationDays != 0) {
-                    duration.Add(durationDays + " Tage");
-                }
-                if (durationHours != 0) {
-                    duration.Add(durationHours + " Stunden");
-                }
-                if (durationMinutes != 0) {
-                    duration.Add(durationMinutes + " Minuten");
-                }
-                string arrival = Convert.ToDateTime(connection.To.Arrival).ToString(@"dd\.MM\.yy \u\m HH\:mm");
-                tblShowConnections.Rows.Add(new string[] { departure, string.Join(", ", duration), arrival });
+            tblOutput.Rows.Clear();
+            List<string[]> rows;
+            string startStation = txbSelectStartStation.Text;
+            DateTime date = dtpDepartOrArrivalDate.Value;
+            DateTime time = dtpDepartOrArrivalTime.Value;
+            DateTime departOrArrival = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
+            if (rdbSearchConnections.Checked)
+            {
+                string endStation = txbSelectEndStation.Text;
+                bool isArrival = rdbArrival.Checked;
+                rows = DataCollector.getConnections(startStation, endStation, 5, departOrArrival, isArrival);
             }
+            else
+            {
+                rows = DataCollector.getStationboards(startStation, departOrArrival);
+            }
+            if (rows != null)
+            {
+                foreach (string[] row in rows)
+                {
+                    tblOutput.Rows.Add(row);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Es wurden keine Ergebnisse gefunden");
+            }
+
+            tblOutput.Focus();
         }
 
         private void lsbSelectStartStation_SelectedIndexChanged(object sender, EventArgs e)
@@ -56,34 +70,39 @@ namespace SwissTransportApp
             txbSelectEndStation.Text = Convert.ToString(lsbSelectEndStation.SelectedItem);
         }
 
-        private void showStations(TextBox searcher, ListBox shower) {
-            shower.Items.Clear();
-            if (!string.IsNullOrEmpty(searcher.Text.Trim())) {
-                if (searcher.Focused) {
-                    Stations stations = transport.GetStations(searcher.Text);
-                    foreach (Station station in stations.StationList)
-                    {
-                        shower.Items.Add(station.Name);
-                    }
-                    shower.Focus();
+        private void showStations(TextBox txbSearch, ListBox lsbShow) {
+            lsbShow.Items.Clear();
+            if (!string.IsNullOrEmpty(txbSearch.Text.Trim()))
+            {
+                Stations stations = transport.GetStations(txbSearch.Text);
+                foreach (Station station in stations.StationList)
+                {
+                    lsbShow.Items.Add(station.Name);
                 }
-                shower.Enabled = true;
-            } else {
-                shower.Enabled = false;
+                lsbShow.Enabled = true;
+                lsbShow.Focus();
+            }
+            else
+            {
+                lsbShow.Enabled = false;
             }
         }
 
         private void txbSelectStartStation_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode.Equals(Keys.Enter)) {
+            if (e.KeyCode.Equals(Keys.F1))
+            {
                 showStations(txbSelectStartStation, lsbSelectStartStation);
+                this.AcceptButton = null;
             }
         }
 
         private void txbSelectEndStation_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode.Equals(Keys.Enter)) {
+            if (e.KeyCode.Equals(Keys.F1))
+            {
                 showStations(txbSelectEndStation, lsbSelectEndStation);
+                this.AcceptButton = null;
             }
         }
 
@@ -94,6 +113,7 @@ namespace SwissTransportApp
                 txbSelectEndStation.Focus();
                 lsbSelectStartStation.Enabled = false;
                 lsbSelectStartStation.Items.Clear();
+                this.AcceptButton = btnSearchConnections;
             }
         }
 
@@ -101,10 +121,45 @@ namespace SwissTransportApp
         {
             if (e.KeyCode.Equals(Keys.Enter))
             {
-                btnSearchConnections.Focus();
-                btnSearchConnections_Click(sender, e);
+                if (rdbArrival.Checked)
+                {
+                    rdbArrival.Focus();
+                }
+                else
+                {
+                    rdbDepart.Focus();
+                }
                 lsbSelectEndStation.Enabled = false;
                 lsbSelectEndStation.Items.Clear();
+                this.AcceptButton = btnSearchConnections;
+            }
+        }
+
+        private void grbChooseAction_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbSearchConnections.Focused)
+            {
+                btnSearchConnections.Text = "Verbindungen suchen";
+                lblSelectStartStation.Text = "Startstation auswählen (Autocomp: F1)";
+                pnlSelectEndStation.Enabled = true;
+                grbDepartOrArrival.Enabled = true;
+                tblOutput.Columns.Clear();
+                tblOutput.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+                clmDeparture,
+                clmDuration,
+                clmArrival});
+            }
+            else
+            {
+                btnSearchConnections.Text = "Abfahrten suchen";
+                lblSelectStartStation.Text = "Station auswählen (Autocomp: F1)";
+                pnlSelectEndStation.Enabled = false;
+                grbDepartOrArrival.Enabled = false;
+                tblOutput.Columns.Clear();
+                tblOutput.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+                clmDeparture,
+                clmName,
+                clmGoal});
             }
         }
     }

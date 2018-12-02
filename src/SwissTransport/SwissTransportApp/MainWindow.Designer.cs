@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.pnlTop = new System.Windows.Forms.Panel();
+            this.grbChooseAction = new System.Windows.Forms.GroupBox();
+            this.rdbSearchDeparts = new System.Windows.Forms.RadioButton();
+            this.rdbSearchConnections = new System.Windows.Forms.RadioButton();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.pnlTabSearchConnections = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlSearchConnections = new System.Windows.Forms.FlowLayoutPanel();
@@ -41,33 +44,76 @@
             this.txbSelectEndStation = new System.Windows.Forms.TextBox();
             this.lblSelectEndStation = new System.Windows.Forms.Label();
             this.pnlOptions = new System.Windows.Forms.Panel();
+            this.dtpDepartOrArrivalTime = new System.Windows.Forms.DateTimePicker();
+            this.grbDepartOrArrival = new System.Windows.Forms.GroupBox();
+            this.rdbArrival = new System.Windows.Forms.RadioButton();
+            this.rdbDepart = new System.Windows.Forms.RadioButton();
+            this.dtpDepartOrArrivalDate = new System.Windows.Forms.DateTimePicker();
             this.btnSearchConnections = new System.Windows.Forms.Button();
-            this.tblShowConnections = new System.Windows.Forms.DataGridView();
+            this.tblOutput = new System.Windows.Forms.DataGridView();
             this.clmDeparture = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clmDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clmArrival = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnlTop.SuspendLayout();
+            this.grbChooseAction.SuspendLayout();
             this.pnlTabSearchConnections.SuspendLayout();
             this.pnlSearchConnections.SuspendLayout();
             this.pnlSelectStartStation.SuspendLayout();
             this.pnlSelectEndStation.SuspendLayout();
             this.pnlOptions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tblShowConnections)).BeginInit();
+            this.grbDepartOrArrival.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tblOutput)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlTop
             // 
+            this.pnlTop.Controls.Add(this.grbChooseAction);
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(684, 49);
+            this.pnlTop.Size = new System.Drawing.Size(659, 49);
             this.pnlTop.TabIndex = 0;
+            // 
+            // grbChooseAction
+            // 
+            this.grbChooseAction.Controls.Add(this.rdbSearchDeparts);
+            this.grbChooseAction.Controls.Add(this.rdbSearchConnections);
+            this.grbChooseAction.Location = new System.Drawing.Point(13, 12);
+            this.grbChooseAction.Name = "grbChooseAction";
+            this.grbChooseAction.Size = new System.Drawing.Size(628, 31);
+            this.grbChooseAction.TabIndex = 0;
+            this.grbChooseAction.TabStop = false;
+            this.grbChooseAction.Text = "Ich möchte:";
+            // 
+            // rdbSearchDeparts
+            // 
+            this.rdbSearchDeparts.AutoSize = true;
+            this.rdbSearchDeparts.Location = new System.Drawing.Point(215, 8);
+            this.rdbSearchDeparts.Name = "rdbSearchDeparts";
+            this.rdbSearchDeparts.Size = new System.Drawing.Size(109, 17);
+            this.rdbSearchDeparts.TabIndex = 1;
+            this.rdbSearchDeparts.Text = "Abfahrten suchen";
+            this.rdbSearchDeparts.UseVisualStyleBackColor = true;
+            // 
+            // rdbSearchConnections
+            // 
+            this.rdbSearchConnections.AutoSize = true;
+            this.rdbSearchConnections.Checked = true;
+            this.rdbSearchConnections.Location = new System.Drawing.Point(74, 8);
+            this.rdbSearchConnections.Name = "rdbSearchConnections";
+            this.rdbSearchConnections.Size = new System.Drawing.Size(129, 17);
+            this.rdbSearchConnections.TabIndex = 0;
+            this.rdbSearchConnections.TabStop = true;
+            this.rdbSearchConnections.Text = "Verbindungen suchen";
+            this.rdbSearchConnections.UseVisualStyleBackColor = true;
+            this.rdbSearchConnections.CheckedChanged += new System.EventHandler(this.grbChooseAction_CheckedChanged);
             // 
             // pnlBottom
             // 
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 509);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(684, 52);
+            this.pnlBottom.Size = new System.Drawing.Size(659, 52);
             this.pnlBottom.TabIndex = 0;
             // 
             // pnlTabSearchConnections
@@ -75,12 +121,12 @@
             this.pnlTabSearchConnections.AutoScroll = true;
             this.pnlTabSearchConnections.AutoSize = true;
             this.pnlTabSearchConnections.Controls.Add(this.pnlSearchConnections);
-            this.pnlTabSearchConnections.Controls.Add(this.tblShowConnections);
+            this.pnlTabSearchConnections.Controls.Add(this.tblOutput);
             this.pnlTabSearchConnections.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTabSearchConnections.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlTabSearchConnections.Location = new System.Drawing.Point(0, 49);
             this.pnlTabSearchConnections.Name = "pnlTabSearchConnections";
-            this.pnlTabSearchConnections.Size = new System.Drawing.Size(684, 460);
+            this.pnlTabSearchConnections.Size = new System.Drawing.Size(659, 460);
             this.pnlTabSearchConnections.TabIndex = 2;
             // 
             // pnlSearchConnections
@@ -115,7 +161,7 @@
             this.lsbSelectStartStation.Name = "lsbSelectStartStation";
             this.lsbSelectStartStation.Size = new System.Drawing.Size(200, 95);
             this.lsbSelectStartStation.TabIndex = 2;
-            this.lsbSelectStartStation.TabIndexChanged += new System.EventHandler(this.lsbSelectStartStation_SelectedIndexChanged);
+            this.lsbSelectStartStation.SelectedValueChanged += new System.EventHandler(this.lsbSelectStartStation_SelectedIndexChanged);
             this.lsbSelectStartStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lsbSelectStartStation_KeyDown);
             // 
             // txbSelectStartStation
@@ -131,9 +177,9 @@
             this.lblSelectStartStation.AutoSize = true;
             this.lblSelectStartStation.Location = new System.Drawing.Point(3, 0);
             this.lblSelectStartStation.Name = "lblSelectStartStation";
-            this.lblSelectStartStation.Size = new System.Drawing.Size(114, 13);
+            this.lblSelectStartStation.Size = new System.Drawing.Size(189, 13);
             this.lblSelectStartStation.TabIndex = 0;
-            this.lblSelectStartStation.Text = "Startstation auswählen";
+            this.lblSelectStartStation.Text = "Startstation auswählen (Autocomp: F1)";
             // 
             // pnlSelectEndStation
             // 
@@ -153,7 +199,7 @@
             this.lsbSelectEndStation.Name = "lsbSelectEndStation";
             this.lsbSelectEndStation.Size = new System.Drawing.Size(200, 95);
             this.lsbSelectEndStation.TabIndex = 2;
-            this.lsbSelectEndStation.TabIndexChanged += new System.EventHandler(this.lsbSelectEndStation_SelectedIndexChanged);
+            this.lsbSelectEndStation.SelectedValueChanged += new System.EventHandler(this.lsbSelectEndStation_SelectedIndexChanged);
             this.lsbSelectEndStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lsbSelectEndStation_KeyDown);
             // 
             // txbSelectEndStation
@@ -169,45 +215,99 @@
             this.lblSelectEndStation.AutoSize = true;
             this.lblSelectEndStation.Location = new System.Drawing.Point(3, 0);
             this.lblSelectEndStation.Name = "lblSelectEndStation";
-            this.lblSelectEndStation.Size = new System.Drawing.Size(109, 13);
+            this.lblSelectEndStation.Size = new System.Drawing.Size(184, 13);
             this.lblSelectEndStation.TabIndex = 0;
-            this.lblSelectEndStation.Text = "Zielstation auswählen";
+            this.lblSelectEndStation.Text = "Zielstation auswählen (Autocomp: F1)";
             // 
             // pnlOptions
             // 
+            this.pnlOptions.Controls.Add(this.dtpDepartOrArrivalTime);
+            this.pnlOptions.Controls.Add(this.grbDepartOrArrival);
+            this.pnlOptions.Controls.Add(this.dtpDepartOrArrivalDate);
             this.pnlOptions.Controls.Add(this.btnSearchConnections);
             this.pnlOptions.Location = new System.Drawing.Point(435, 3);
             this.pnlOptions.Name = "pnlOptions";
-            this.pnlOptions.Size = new System.Drawing.Size(210, 28);
+            this.pnlOptions.Size = new System.Drawing.Size(210, 145);
             this.pnlOptions.TabIndex = 2;
+            // 
+            // dtpDepartOrArrivalTime
+            // 
+            this.dtpDepartOrArrivalTime.CustomFormat = "HH:mm";
+            this.dtpDepartOrArrivalTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDepartOrArrivalTime.Location = new System.Drawing.Point(133, 88);
+            this.dtpDepartOrArrivalTime.Name = "dtpDepartOrArrivalTime";
+            this.dtpDepartOrArrivalTime.ShowUpDown = true;
+            this.dtpDepartOrArrivalTime.Size = new System.Drawing.Size(70, 20);
+            this.dtpDepartOrArrivalTime.TabIndex = 2;
+            // 
+            // grbDepartOrArrival
+            // 
+            this.grbDepartOrArrival.Controls.Add(this.rdbArrival);
+            this.grbDepartOrArrival.Controls.Add(this.rdbDepart);
+            this.grbDepartOrArrival.Location = new System.Drawing.Point(3, 42);
+            this.grbDepartOrArrival.Name = "grbDepartOrArrival";
+            this.grbDepartOrArrival.Size = new System.Drawing.Size(200, 40);
+            this.grbDepartOrArrival.TabIndex = 0;
+            this.grbDepartOrArrival.TabStop = false;
+            // 
+            // rdbArrival
+            // 
+            this.rdbArrival.AutoSize = true;
+            this.rdbArrival.Location = new System.Drawing.Point(109, 17);
+            this.rdbArrival.Name = "rdbArrival";
+            this.rdbArrival.Size = new System.Drawing.Size(82, 17);
+            this.rdbArrival.TabIndex = 1;
+            this.rdbArrival.Text = "Ankunft um:";
+            this.rdbArrival.UseVisualStyleBackColor = true;
+            // 
+            // rdbDepart
+            // 
+            this.rdbDepart.AutoSize = true;
+            this.rdbDepart.Checked = true;
+            this.rdbDepart.Location = new System.Drawing.Point(7, 17);
+            this.rdbDepart.Name = "rdbDepart";
+            this.rdbDepart.Size = new System.Drawing.Size(79, 17);
+            this.rdbDepart.TabIndex = 0;
+            this.rdbDepart.TabStop = true;
+            this.rdbDepart.Text = "Abfahrt um:";
+            this.rdbDepart.UseVisualStyleBackColor = true;
+            // 
+            // dtpDepartOrArrivalDate
+            // 
+            this.dtpDepartOrArrivalDate.CustomFormat = "";
+            this.dtpDepartOrArrivalDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDepartOrArrivalDate.Location = new System.Drawing.Point(3, 88);
+            this.dtpDepartOrArrivalDate.Name = "dtpDepartOrArrivalDate";
+            this.dtpDepartOrArrivalDate.Size = new System.Drawing.Size(124, 20);
+            this.dtpDepartOrArrivalDate.TabIndex = 1;
             // 
             // btnSearchConnections
             // 
-            this.btnSearchConnections.Location = new System.Drawing.Point(3, 3);
+            this.btnSearchConnections.Location = new System.Drawing.Point(3, 114);
             this.btnSearchConnections.Name = "btnSearchConnections";
             this.btnSearchConnections.Size = new System.Drawing.Size(200, 23);
-            this.btnSearchConnections.TabIndex = 0;
+            this.btnSearchConnections.TabIndex = 3;
             this.btnSearchConnections.Text = "Verbindungen suchen";
             this.btnSearchConnections.UseVisualStyleBackColor = true;
             this.btnSearchConnections.Click += new System.EventHandler(this.btnSearchConnections_Click);
             // 
-            // tblShowConnections
+            // tblOutput
             // 
-            this.tblShowConnections.AllowUserToAddRows = false;
-            this.tblShowConnections.AllowUserToDeleteRows = false;
-            this.tblShowConnections.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.tblShowConnections.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.tblShowConnections.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tblShowConnections.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.tblOutput.AllowUserToAddRows = false;
+            this.tblOutput.AllowUserToDeleteRows = false;
+            this.tblOutput.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.tblOutput.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.tblOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tblOutput.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clmDeparture,
             this.clmDuration,
             this.clmArrival});
-            this.tblShowConnections.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tblShowConnections.Location = new System.Drawing.Point(3, 160);
-            this.tblShowConnections.Name = "tblShowConnections";
-            this.tblShowConnections.ReadOnly = true;
-            this.tblShowConnections.Size = new System.Drawing.Size(648, 150);
-            this.tblShowConnections.TabIndex = 3;
+            this.tblOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tblOutput.Location = new System.Drawing.Point(3, 160);
+            this.tblOutput.Name = "tblOutput";
+            this.tblOutput.ReadOnly = true;
+            this.tblOutput.Size = new System.Drawing.Size(648, 290);
+            this.tblOutput.TabIndex = 3;
             // 
             // clmDeparture
             // 
@@ -229,15 +329,21 @@
             // 
             // MainWindow
             // 
+            this.AcceptButton = this.btnSearchConnections;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 561);
+            this.ClientSize = new System.Drawing.Size(659, 561);
             this.Controls.Add(this.pnlTabSearchConnections);
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlTop);
-            this.MinimumSize = new System.Drawing.Size(700, 600);
+            this.KeyPreview = true;
+            this.MaximumSize = new System.Drawing.Size(675, 600);
+            this.MinimumSize = new System.Drawing.Size(675, 600);
             this.Name = "MainWindow";
             this.Text = "Verbindung suchen - ÖV-Applikation";
+            this.pnlTop.ResumeLayout(false);
+            this.grbChooseAction.ResumeLayout(false);
+            this.grbChooseAction.PerformLayout();
             this.pnlTabSearchConnections.ResumeLayout(false);
             this.pnlTabSearchConnections.PerformLayout();
             this.pnlSearchConnections.ResumeLayout(false);
@@ -246,7 +352,9 @@
             this.pnlSelectEndStation.ResumeLayout(false);
             this.pnlSelectEndStation.PerformLayout();
             this.pnlOptions.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tblShowConnections)).EndInit();
+            this.grbDepartOrArrival.ResumeLayout(false);
+            this.grbDepartOrArrival.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tblOutput)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -268,10 +376,18 @@
         private System.Windows.Forms.Label lblSelectEndStation;
         private System.Windows.Forms.Panel pnlOptions;
         private System.Windows.Forms.Button btnSearchConnections;
-        private System.Windows.Forms.DataGridView tblShowConnections;
+        private System.Windows.Forms.DataGridView tblOutput;
         private System.Windows.Forms.DataGridViewTextBoxColumn clmDeparture;
         private System.Windows.Forms.DataGridViewTextBoxColumn clmDuration;
         private System.Windows.Forms.DataGridViewTextBoxColumn clmArrival;
+        private System.Windows.Forms.DateTimePicker dtpDepartOrArrivalDate;
+        private System.Windows.Forms.GroupBox grbDepartOrArrival;
+        private System.Windows.Forms.RadioButton rdbArrival;
+        private System.Windows.Forms.RadioButton rdbDepart;
+        private System.Windows.Forms.DateTimePicker dtpDepartOrArrivalTime;
+        private System.Windows.Forms.GroupBox grbChooseAction;
+        private System.Windows.Forms.RadioButton rdbSearchConnections;
+        private System.Windows.Forms.RadioButton rdbSearchDeparts;
     }
 }
 

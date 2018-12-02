@@ -23,9 +23,16 @@ namespace SwissTransport
             return null;
         }
 
-        public StationBoardRoot GetStationBoard(string station, string id)
+        /// <summary>
+        /// returns a stationboard by giving a station and optional queries. Query "queryname=value". Read more at https://transport.opendata.ch/docs.html#stationboard
+        /// </summary>
+        /// <param name="station"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public StationBoardRoot GetStationBoard(string station, string id, params string[] queries)
         {
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/stationboard?Station=" + station + "&id=" + id);
+            string query = (queries.Length > 0 ? "&" : "") + string.Join("&", queries);
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/stationboard?Station=" + station +"&id=" + id + query);
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 
@@ -40,9 +47,17 @@ namespace SwissTransport
             return null;
         }
 
-        public Connections GetConnections(string fromStation, string toStattion)
+        /// <summary>
+        /// returns connections by giving a start station, a end station and optional queries. Query "queryname=value". Read more at https://transport.opendata.ch/docs.html#connections
+        /// </summary>
+        /// <param name="fromStation"></param>
+        /// <param name="toStation"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public Connections GetConnections(string fromStation, string toStation, params string[] queries)
         {
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStattion);
+            string query = (queries.Length > 0 ? "&" : "") + string.Join("&", queries);
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStation +query);
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 

@@ -64,6 +64,8 @@
     <Compile Include="ConnectionPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DataCollector.cs" />
+    <Compile Include="Duration.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
