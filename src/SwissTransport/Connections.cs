@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -9,7 +10,7 @@ namespace SwissTransport
         public List<Connection> ConnectionList { get; set; } 
     }
 
-    public class Connection
+    public class Connection : DataGridObject
     {
         [JsonProperty("from")]
         public ConnectionPoint From  { get; set; }
@@ -19,6 +20,23 @@ namespace SwissTransport
 
         [JsonProperty("duration")]
         public string Duration { get; set; }
+
+        [JsonProperty("products")]
+        public string[] products { get; set; }
+        
+        private const string DATETIME_FORMATTER = @"dd\.MM\.yyyy \u\m HH\:mm \U\h\r";
+
+        /// <summary>
+        /// Returns the values departure, duration and arrival in a string array for a GridView row
+        /// </summary>
+        /// <returns></returns>
+        public string[] toRow()
+        {
+            string departure = Convert.ToDateTime(this.From.Departure).ToString(DATETIME_FORMATTER);
+            string duration = SwissTransport.Duration.parse(this.Duration).toString();
+            string arrival = Convert.ToDateTime(this.To.Arrival).ToString(DATETIME_FORMATTER);
+            return new string[] { departure, duration, arrival };
+        }
     }
 
     public class ConnectionPoint

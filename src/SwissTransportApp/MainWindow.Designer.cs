@@ -319,6 +319,8 @@
             this.tblOutput.ReadOnly = true;
             this.tblOutput.Size = new System.Drawing.Size(648, 290);
             this.tblOutput.TabIndex = 3;
+            this.tblOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tblOutput_KeyDown);
+            this.tblOutput.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tblOutput_MouseDown);
             // 
             // clmDeparture
             // 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SwissTransportApp
+namespace SwissTransport
 {
-    class Duration
+    public class Duration
     {
         public int days { get; }
         public int hours { get; }

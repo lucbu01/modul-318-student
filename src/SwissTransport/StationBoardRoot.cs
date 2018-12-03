@@ -13,8 +13,11 @@ namespace SwissTransport
         public List<StationBoard> Entries { get; set; }
     }
 
-    public class StationBoard
+
+    public class StationBoard : DataGridObject
     {
+        private const string DATETIME_FORMATTER = @"dd\.MM\.yyyy \u\m HH\:mm \U\h\r";
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -32,6 +35,19 @@ namespace SwissTransport
 
         [JsonProperty("stop")]
         public Stop Stop { get; set; }
+
+        /// <summary>
+        /// 
+        /// Returns the values departure, name and goal in a string array for a GridView row
+        /// </summary>
+        /// <returns></returns>
+        public string[] toRow()
+        {
+            string departure = Convert.ToDateTime(this.Stop.Departure).ToString(DATETIME_FORMATTER);
+            string name = this.Name;
+            string goal = this.To;
+            return new string[] { departure, name, goal };
+        }
     }
 
     public class Stop

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,8 +16,10 @@ namespace SwissTransportApp
     {
         private DataGridViewTextBoxColumn clmName = new DataGridViewTextBoxColumn();
         private DataGridViewTextBoxColumn clmGoal = new DataGridViewTextBoxColumn();
+        private Connections connections;
+        private StationBoardRoot stationBoards;
 
-        private ITransport transport = new Transport();
+        private Transport transport = new Transport();
         public MainWindow()
         {
             InitializeComponent();
@@ -37,35 +40,55 @@ namespace SwissTransportApp
         {
             this.Cursor = Cursors.WaitCursor;
             tblOutput.Rows.Clear();
-            List<string[]> rows;
+            List<DataGridObject> rows = new List<DataGridObject>();
             string startStation = txbSelectStartStation.Text.Trim();
             DateTime date = dtpDepartOrArrivalDate.Value;
             DateTime time = dtpDepartOrArrivalTime.Value;
             DateTime departOrArrival = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
-            if (rdbSearchConnections.Checked)
+
+            try
             {
-                string endStation = txbSelectEndStation.Text.Trim();
-                bool isArrival = rdbArrival.Checked;
-                rows = DataCollector.getConnections(startStation, endStation, 5, departOrArrival, isArrival);
-            }
-            else
-            {
-                rows = DataCollector.getStationboards(startStation, departOrArrival);
-            }
-            if (rows != null)
-            {
-                foreach (string[] row in rows)
+                if (rdbSearchConnections.Checked)
                 {
-                    tblOutput.Rows.Add(row);
+                    string endStation = txbSelectEndStation.Text.Trim();
+                    bool isArrival = rdbArrival.Checked;
+                    connections = transport.searchConnections(startStation, endStation, 5, departOrArrival, isArrival);
+                    if(connections != null)
+                    {
+                        rows.AddRange(connections.ConnectionList);
+                    }
+                }
+                else
+                {
+                    stationBoards = transport.searchStationboards(startStation, departOrArrival);
+                    if(stationBoards != null)
+                    {
+                        rows.AddRange(stationBoards.Entries);
+                    }
+                }
+
+                if (rows.Count > 0)
+                {
+                    foreach (DataGridObject row in rows)
+                    {
+                        tblOutput.Rows.Add(row.toRow());
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "Es wurden keine Ergebnisse gefunden!\nBitte passen Sie Ihre Suche an.", "Keine Ergebnisse", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                tblOutput.Focus();
+                this.Cursor = Cursors.Default;
+            }
+            catch (WebException ex)
+            {
+                if(ex.Message.Contains("Too Many Requests"))
+                {
+                    MessageBox.Show(this, "Die Anzahl maximale Aufrufe pro Tag wurde aufgebraucht!\nPro Tag und IP können nur 1000 Abfragen gemacht werden.", "Anfragen aufgebraucht", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else
-            {
-                MessageBox.Show(this, "Es wurden keine Ergebnisse gefunden!\nBitte passen Sie Ihre Suche an.", "Keine Ergebnisse", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-
-            tblOutput.Focus();
-            this.Cursor = Cursors.Default;
         }
 
         private void lsbSelectStartStation_SelectedIndexChanged(object sender, EventArgs e)
@@ -190,6 +213,23 @@ namespace SwissTransportApp
                 rdbSearchConnections.Checked = !check;
                 rdbSearchDeparts.Checked = check;
                 grbChooseAction_CheckedChanged(sender, e);
+            }
+        }
+
+        private void tblOutput_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Clicks > 1)
+            {
+                tblOutput_KeyDown(sender, new KeyEventArgs(Keys.Enter));
+            }
+        }
+
+        private void tblOutput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (rdbSearchConnections.Checked)
+            {
+                int index = tblOutput.CurrentRow.Index;
+                new ConnectionWindow(connections.ConnectionList[index]).Show();
             }
         }
     }

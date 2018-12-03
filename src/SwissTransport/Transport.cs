@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 
@@ -48,6 +50,19 @@ namespace SwissTransport
         }
 
         /// <summary>
+        /// Use the SwissTransport API to search stationboards from a station.
+        /// </summary>
+        /// <param name="station"></param>
+        /// <param name="dateAndTime"></param>
+        /// <returns>stationBoardRoot</returns>
+        public StationBoardRoot searchStationboards(string station, DateTime dateAndTime)
+        {
+            List<string[]> rows = new List<string[]>();
+            string datetime = "datetime=" + dateAndTime.ToString(@"yyyy-MM-dd HH:mm");
+            return GetStationBoard(station, datetime);
+        }
+
+        /// <summary>
         /// returns connections by giving a start station, a end station and optional queries. Query "queryname=value". Read more at https://transport.opendata.ch/docs.html#connections
         /// </summary>
         /// <param name="fromStation"></param>
@@ -81,6 +96,29 @@ namespace SwissTransport
             request.Proxy = webProxy;
             
             return request;
+        }
+
+
+        /// <summary>
+        /// Use the SwissTransport API to search connections between two stations.
+        /// </summary>
+        /// <param name="startStation"></param>
+        /// <param name="endStation"></param>
+        /// <param name="numberOfRows"></param>
+        /// <param name="departOrArrival"></param>
+        /// <param name="isArrival"></param>
+        /// <returns>connections</returns>
+        public Connections searchConnections(string startStation, string endStation, int numberOfRows, DateTime departOrArrival, bool isArrival)
+        {
+            if (!string.IsNullOrEmpty(startStation) && !string.IsNullOrEmpty(endStation) && numberOfRows != 0 && departOrArrival != null)
+            {
+                string limit = "limit=" + numberOfRows;
+                string date = "date=" + departOrArrival.ToString(@"yy-MM-dd");
+                string time = "time=" + departOrArrival.ToString(@"HH:mm");
+                string isArrivalTime = "isArrivalTime=" + (isArrival ? "1" : "0");
+                return GetConnections(startStation, endStation, limit, date, time, isArrivalTime);
+            }
+            return null;
         }
     }
 }
