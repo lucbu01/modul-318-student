@@ -51,7 +51,9 @@
             this.dtpDepartOrArrivalDate = new System.Windows.Forms.DateTimePicker();
             this.btnSearchConnections = new System.Windows.Forms.Button();
             this.tblOutput = new System.Windows.Forms.DataGridView();
+            this.lblSwitchAction = new System.Windows.Forms.Label();
             this.clmDeparture = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clmPlatform = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clmDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clmArrival = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlTop.SuspendLayout();
@@ -76,6 +78,7 @@
             // 
             // grbChooseAction
             // 
+            this.grbChooseAction.Controls.Add(this.lblSwitchAction);
             this.grbChooseAction.Controls.Add(this.rdbSearchDeparts);
             this.grbChooseAction.Controls.Add(this.rdbSearchConnections);
             this.grbChooseAction.Location = new System.Drawing.Point(13, 12);
@@ -300,6 +303,7 @@
             this.tblOutput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tblOutput.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clmDeparture,
+            this.clmPlatform,
             this.clmDuration,
             this.clmArrival});
             this.tblOutput.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -309,11 +313,26 @@
             this.tblOutput.Size = new System.Drawing.Size(648, 290);
             this.tblOutput.TabIndex = 3;
             // 
+            // lblSwitchAction
+            // 
+            this.lblSwitchAction.AutoSize = true;
+            this.lblSwitchAction.Location = new System.Drawing.Point(330, 10);
+            this.lblSwitchAction.Name = "lblSwitchAction";
+            this.lblSwitchAction.Size = new System.Drawing.Size(79, 13);
+            this.lblSwitchAction.TabIndex = 2;
+            this.lblSwitchAction.Text = "(Wechseln: F2)";
+            // 
             // clmDeparture
             // 
             this.clmDeparture.HeaderText = "Abfahrt";
             this.clmDeparture.Name = "clmDeparture";
             this.clmDeparture.ReadOnly = true;
+            // 
+            // clmPlatform
+            // 
+            this.clmPlatform.HeaderText = "Gleis/Kante";
+            this.clmPlatform.Name = "clmPlatform";
+            this.clmPlatform.ReadOnly = true;
             // 
             // clmDuration
             // 
@@ -340,7 +359,10 @@
             this.MaximumSize = new System.Drawing.Size(675, 600);
             this.MinimumSize = new System.Drawing.Size(675, 600);
             this.Name = "MainWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Verbindung suchen - ÖV-Applikation";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
             this.pnlTop.ResumeLayout(false);
             this.grbChooseAction.ResumeLayout(false);
             this.grbChooseAction.PerformLayout();
@@ -377,9 +399,6 @@
         private System.Windows.Forms.Panel pnlOptions;
         private System.Windows.Forms.Button btnSearchConnections;
         private System.Windows.Forms.DataGridView tblOutput;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmDeparture;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmDuration;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmArrival;
         private System.Windows.Forms.DateTimePicker dtpDepartOrArrivalDate;
         private System.Windows.Forms.GroupBox grbDepartOrArrival;
         private System.Windows.Forms.RadioButton rdbArrival;
@@ -388,6 +407,11 @@
         private System.Windows.Forms.GroupBox grbChooseAction;
         private System.Windows.Forms.RadioButton rdbSearchConnections;
         private System.Windows.Forms.RadioButton rdbSearchDeparts;
+        private System.Windows.Forms.Label lblSwitchAction;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmDeparture;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmPlatform;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmDuration;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clmArrival;
     }
 }
 

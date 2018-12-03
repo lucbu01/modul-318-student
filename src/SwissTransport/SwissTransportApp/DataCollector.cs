@@ -15,7 +15,7 @@ namespace SwissTransportApp
 
         /// <summary>
         /// Use the SwissTransport API to search connections between two stations.
-        /// Returns a list of rows. Each row is a string array with the values departure, duration and arrival.
+        /// Returns a list of rows. Each row is a string array with the values departure, platform, duration and arrival.
         /// </summary>
         /// <param name="startStation"></param>
         /// <param name="endStation"></param>
@@ -25,21 +25,27 @@ namespace SwissTransportApp
         /// <returns></returns>
         public static List<string[]> getConnections(string startStation, string endStation, int numberOfRows, DateTime departOrArrival, bool isArrival)
         {
-            string limit = "limit=" + numberOfRows;
-            string date = "date=" + departOrArrival.ToString(@"yy-MM-dd");
-            string time = "time=" + departOrArrival.ToString(@"HH:mm");
-            string isArrivalTime = "isArrivalTime=" + (isArrival ? "1" : "0");
-            Connections connections = transport.GetConnections(startStation, endStation, limit, date, time, isArrivalTime);
-            List<string[]> rows = new List<string[]>();
-
-            foreach (Connection connection in connections.ConnectionList)
+            if (!string.IsNullOrEmpty(startStation) && !string.IsNullOrEmpty(endStation) &&  numberOfRows != 0 && departOrArrival != null)
             {
-                string departure = Convert.ToDateTime(connection.From.Departure).ToString(dateTimeFormatter);
-                string duration = Duration.parse(connection.Duration).toString();
-                string arrival = Convert.ToDateTime(connection.To.Arrival).ToString(dateTimeFormatter);
-                rows.Add(new string[] { departure, duration, arrival });
+                string limit = "limit=" + numberOfRows;
+                string date = "date=" + departOrArrival.ToString(@"yy-MM-dd");
+                string time = "time=" + departOrArrival.ToString(@"HH:mm");
+                string isArrivalTime = "isArrivalTime=" + (isArrival ? "1" : "0");
+                Connections connections = transport.GetConnections(startStation, endStation, limit, date, time, isArrivalTime);
+                List<string[]> rows = new List<string[]>();
+
+                foreach (Connection connection in connections.ConnectionList)
+                {
+                    string departure = Convert.ToDateTime(connection.From.Departure).ToString(dateTimeFormatter);
+                    string duration = Duration.parse(connection.Duration).toString();
+                    string platform = connection.From.Platform;
+                    string arrival = Convert.ToDateTime(connection.To.Arrival).ToString(dateTimeFormatter);
+                    rows.Add(new string[] { departure, platform, duration, arrival });
+                }
+                return rows;
             }
-            return rows;
+
+            return null;
         }
 
         /// <summary>
@@ -54,12 +60,13 @@ namespace SwissTransportApp
             List<string[]> rows = new List<string[]>();
             string datetime = "datetime=" + dateAndTime.ToString(@"yyyy-MM-dd HH:mm");
             string id = null; ;
+
             try
             {
                 id = transport.GetStations(station).StationList[0].Id;
-
             }
             catch { }
+
             if (id != null)
             {
                 StationBoardRoot root = transport.GetStationBoard(station, id, datetime);

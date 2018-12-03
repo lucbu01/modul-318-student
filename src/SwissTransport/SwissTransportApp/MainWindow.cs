@@ -28,17 +28,23 @@ namespace SwissTransportApp
             this.clmGoal.ReadOnly = true;
         }
 
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            lsbSelectStartStation.Focus();
+        }
+
         private void btnSearchConnections_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             tblOutput.Rows.Clear();
             List<string[]> rows;
-            string startStation = txbSelectStartStation.Text;
+            string startStation = txbSelectStartStation.Text.Trim();
             DateTime date = dtpDepartOrArrivalDate.Value;
             DateTime time = dtpDepartOrArrivalTime.Value;
             DateTime departOrArrival = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
             if (rdbSearchConnections.Checked)
             {
-                string endStation = txbSelectEndStation.Text;
+                string endStation = txbSelectEndStation.Text.Trim();
                 bool isArrival = rdbArrival.Checked;
                 rows = DataCollector.getConnections(startStation, endStation, 5, departOrArrival, isArrival);
             }
@@ -55,10 +61,11 @@ namespace SwissTransportApp
             }
             else
             {
-                MessageBox.Show("Es wurden keine Ergebnisse gefunden");
+                MessageBox.Show(this, "Es wurden keine Ergebnisse gefunden!\nBitte passen Sie Ihre Suche an.", "Keine Ergebnisse", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             tblOutput.Focus();
+            this.Cursor = Cursors.Default;
         }
 
         private void lsbSelectStartStation_SelectedIndexChanged(object sender, EventArgs e)
@@ -70,22 +77,32 @@ namespace SwissTransportApp
             txbSelectEndStation.Text = Convert.ToString(lsbSelectEndStation.SelectedItem);
         }
 
-        private void showStations(TextBox txbSearch, ListBox lsbShow) {
+        private void showStations(TextBox txbSearch, ListBox lsbShow)
+        {
+            this.Cursor = Cursors.WaitCursor;
             lsbShow.Items.Clear();
             if (!string.IsNullOrEmpty(txbSearch.Text.Trim()))
             {
                 Stations stations = transport.GetStations(txbSearch.Text);
+
                 foreach (Station station in stations.StationList)
                 {
                     lsbShow.Items.Add(station.Name);
                 }
+
                 lsbShow.Enabled = true;
                 lsbShow.Focus();
+
+                if(lsbShow.Items.Count > 0)
+                {
+                    lsbShow.SelectedIndex = 0;
+                }
             }
             else
             {
                 lsbShow.Enabled = false;
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void txbSelectStartStation_KeyDown(object sender, KeyEventArgs e)
@@ -129,6 +146,7 @@ namespace SwissTransportApp
                 {
                     rdbDepart.Focus();
                 }
+
                 lsbSelectEndStation.Enabled = false;
                 lsbSelectEndStation.Items.Clear();
                 this.AcceptButton = btnSearchConnections;
@@ -137,15 +155,17 @@ namespace SwissTransportApp
 
         private void grbChooseAction_CheckedChanged(object sender, EventArgs e)
         {
-            if (rdbSearchConnections.Focused)
+            tblOutput.Columns.Clear();
+
+            if (rdbSearchConnections.Checked)
             {
                 btnSearchConnections.Text = "Verbindungen suchen";
                 lblSelectStartStation.Text = "Startstation auswählen (Autocomp: F1)";
                 pnlSelectEndStation.Enabled = true;
                 grbDepartOrArrival.Enabled = true;
-                tblOutput.Columns.Clear();
                 tblOutput.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
                 clmDeparture,
+                clmPlatform,
                 clmDuration,
                 clmArrival});
             }
@@ -155,11 +175,21 @@ namespace SwissTransportApp
                 lblSelectStartStation.Text = "Station auswählen (Autocomp: F1)";
                 pnlSelectEndStation.Enabled = false;
                 grbDepartOrArrival.Enabled = false;
-                tblOutput.Columns.Clear();
                 tblOutput.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
                 clmDeparture,
                 clmName,
                 clmGoal});
+            }
+            lsbSelectStartStation.Focus();
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode.Equals(Keys.F2)) {
+                bool check = rdbSearchConnections.Checked;
+                rdbSearchConnections.Checked = !check;
+                rdbSearchDeparts.Checked = check;
+                grbChooseAction_CheckedChanged(sender, e);
             }
         }
     }
