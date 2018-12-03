@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace SwissTransport
 {
@@ -33,5 +35,38 @@ namespace SwissTransport
 
             Assert.IsNotNull(connections);
         }
+
+        #region self-implemented
+
+        [TestMethod]
+        public void searchConnections()
+        {
+            testee = new Transport();
+            string stationFrom = "Sursee";
+            string stationTo = "Luzern";
+            DateTime dateAndTime = DateTime.Now;
+            bool isArrivalTime = false;
+            int limit = 4;
+
+            Connections connections = testee.searchConnections(stationFrom, stationTo, limit, dateAndTime, isArrivalTime);
+
+            Assert.AreEqual(4, connections.ConnectionList.Count);
+            Assert.AreEqual("Sursee", connections.ConnectionList[0].From.Station.Name);
+            Assert.AreEqual("Luzern", connections.ConnectionList[0].To.Station.Name);
+        }
+
+        [TestMethod]
+        public void searchStationboards()
+        {
+            testee = new Transport();
+            string station = "Sursee";
+            DateTime dateAndTime = DateTime.Now;
+
+            StationBoardRoot stationBoards = testee.searchStationboards(station, dateAndTime);
+            
+            Assert.AreEqual("Sursee", stationBoards.Station.Name);
+        }
+
+        #endregion
     }
 }

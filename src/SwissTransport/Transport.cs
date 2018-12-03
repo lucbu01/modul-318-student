@@ -17,8 +17,7 @@ namespace SwissTransport
             if (responseStream != null)
             {
                 var message = new StreamReader(responseStream).ReadToEnd();
-                var stations = JsonConvert.DeserializeObject<Stations>(message
-                    , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                var stations = JsonConvert.DeserializeObject<Stations>(message , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 return stations;
             }
 
@@ -33,6 +32,7 @@ namespace SwissTransport
         /// <returns></returns>
         public StationBoardRoot GetStationBoard(string station, params string[] queries)
         {
+            // optional attributes can be given
             string query = (queries.Length > 0 ? "&" : "") + string.Join("&", queries);
             var request = CreateWebRequest("http://transport.opendata.ch/v1/stationboard?station=" + station + query);
             var response = request.GetResponse();
@@ -41,14 +41,14 @@ namespace SwissTransport
             if (responseStream != null)
             {
                 var readToEnd = new StreamReader(responseStream).ReadToEnd();
-                var stationboard =
-                    JsonConvert.DeserializeObject<StationBoardRoot>(readToEnd);
+                var stationboard = JsonConvert.DeserializeObject<StationBoardRoot>(readToEnd);
                 return stationboard;
             }
 
             return null;
         }
 
+        #region self-implemented
         /// <summary>
         /// Use the SwissTransport API to search stationboards from a station.
         /// </summary>
@@ -61,6 +61,7 @@ namespace SwissTransport
             string datetime = "datetime=" + dateAndTime.ToString(@"yyyy-MM-dd HH:mm");
             return GetStationBoard(station, datetime);
         }
+        #endregion
 
         /// <summary>
         /// returns connections by giving a start station, a end station and optional queries. Query "queryname=value". Read more at https://transport.opendata.ch/docs.html#connections
@@ -71,6 +72,7 @@ namespace SwissTransport
         /// <returns></returns>
         public Connections GetConnections(string fromStation, string toStation, params string[] queries)
         {
+            // optional attributes can be given
             string query = (queries.Length > 0 ? "&" : "") + string.Join("&", queries);
             var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStation +query);
             var response = request.GetResponse();
@@ -98,7 +100,7 @@ namespace SwissTransport
             return request;
         }
 
-
+        #region self-implemented
         /// <summary>
         /// Use the SwissTransport API to search connections between two stations.
         /// </summary>
@@ -110,6 +112,7 @@ namespace SwissTransport
         /// <returns>connections</returns>
         public Connections searchConnections(string startStation, string endStation, int numberOfRows, DateTime departOrArrival, bool isArrival)
         {
+            // prevent unnecessary calls
             if (!string.IsNullOrEmpty(startStation) && !string.IsNullOrEmpty(endStation) && numberOfRows != 0 && departOrArrival != null)
             {
                 string limit = "limit=" + numberOfRows;
@@ -120,5 +123,6 @@ namespace SwissTransport
             }
             return null;
         }
+        #endregion
     }
 }
