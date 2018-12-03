@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace SwissTransportApp
 {
-    class DataCollector
+    public class DataCollector
     {
         private static Transport transport = new Transport();
         private static string dateTimeFormatter = @"dd\.MM\.yyyy \u\m HH\:mm \U\h\r";
