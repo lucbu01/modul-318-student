@@ -29,10 +29,10 @@ namespace SwissTransport
         /// <param name="station"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public StationBoardRoot GetStationBoard(string station, string id, params string[] queries)
+        public StationBoardRoot GetStationBoard(string station, params string[] queries)
         {
             string query = (queries.Length > 0 ? "&" : "") + string.Join("&", queries);
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/stationboard?Station=" + station +"&id=" + id + query);
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/stationboard?station=" + station + query);
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 

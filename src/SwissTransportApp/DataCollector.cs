@@ -58,31 +58,21 @@ namespace SwissTransportApp
         {
             List<string[]> rows = new List<string[]>();
             string datetime = "datetime=" + dateAndTime.ToString(@"yyyy-MM-dd HH:mm");
-            string id = null; ;
-
-            try
+            
+            StationBoardRoot root = transport.GetStationBoard(station, datetime);
+            List<StationBoard> stationBoards = root.Entries;
+            foreach (StationBoard stationBoard in stationBoards)
             {
-                id = transport.GetStations(station).StationList[0].Id;
+                string departure = Convert.ToDateTime(stationBoard.Stop.Departure).ToString(dateTimeFormatter);
+                string name = stationBoard.Name;
+                string goal = stationBoard.To;
+                rows.Add(new string[] { departure, name, goal });
             }
-            catch { }
-
-            if (id != null)
-            {
-                StationBoardRoot root = transport.GetStationBoard(station, id, datetime);
-                List<StationBoard> stationBoards = root.Entries;
-                foreach (StationBoard stationBoard in stationBoards)
-                {
-                    string departure = Convert.ToDateTime(stationBoard.Stop.Departure).ToString(dateTimeFormatter);
-                    string name = stationBoard.Name;
-                    string goal = stationBoard.To;
-                    rows.Add(new string[] { departure, name, goal });
-                }
-                return rows;
-            }
-            else
+            if (rows.Count == 0)
             {
                 return null;
             }
+            return rows;
         }
     }
 }
