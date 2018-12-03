@@ -72,6 +72,7 @@ namespace SwissTransportApp
         {
             txbSelectStartStation.Text = Convert.ToString(lsbSelectStartStation.SelectedItem);
         }
+
         private void lsbSelectEndStation_SelectedIndexChanged(object sender, EventArgs e)
         {
             txbSelectEndStation.Text = Convert.ToString(lsbSelectEndStation.SelectedItem);
@@ -93,7 +94,7 @@ namespace SwissTransportApp
                 lsbShow.Enabled = true;
                 lsbShow.Focus();
 
-                if(lsbShow.Items.Count > 0)
+                if (lsbShow.Items.Count > 0)
                 {
                     lsbShow.SelectedIndex = 0;
                 }
@@ -185,7 +186,7 @@ namespace SwissTransportApp
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode.Equals(Keys.F2)) {
+            if (e.KeyCode.Equals(Keys.F2)) {
                 bool check = rdbSearchConnections.Checked;
                 rdbSearchConnections.Checked = !check;
                 rdbSearchDeparts.Checked = check;
