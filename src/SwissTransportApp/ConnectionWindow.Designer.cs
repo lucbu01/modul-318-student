@@ -244,7 +244,7 @@
             this.MinimumSize = new System.Drawing.Size(723, 182);
             this.Name = "ConnectionWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ÖV-Applikation - Verbindung";
+            this.Text = "Verbindung - ÖV-Applikation";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();

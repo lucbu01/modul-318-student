@@ -94,6 +94,12 @@
     <Compile Include="ConnectionPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DepartWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DepartWindow.Designer.cs">
+      <DependentUpon>DepartWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ConnectionWindow.resx">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DepartWindow.resx">
+      <DependentUpon>DepartWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

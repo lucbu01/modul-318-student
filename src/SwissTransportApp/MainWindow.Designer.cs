@@ -307,6 +307,7 @@
             this.tblOutput.Location = new System.Drawing.Point(3, 160);
             this.tblOutput.Name = "tblOutput";
             this.tblOutput.ReadOnly = true;
+            this.tblOutput.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.tblOutput.Size = new System.Drawing.Size(648, 345);
             this.tblOutput.TabIndex = 3;
             this.tblOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tblOutput_KeyDown);
@@ -345,7 +346,7 @@
             this.MinimumSize = new System.Drawing.Size(675, 600);
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Verbindung suchen - ÖV-Applikation";
+            this.Text = "Verbindungen suchen - ÖV-Applikation";
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
             this.pnlTop.ResumeLayout(false);

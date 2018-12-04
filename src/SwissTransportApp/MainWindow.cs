@@ -52,7 +52,7 @@ namespace SwissTransportApp
                 {
                     string endStation = txbSelectEndStation.Text.Trim();
                     bool isArrival = rdbArrival.Checked;
-                    connections = transport.searchConnections(startStation, endStation, 10, departOrArrival, isArrival);
+                    connections = transport.searchConnections(startStation, endStation, 16, departOrArrival, isArrival);
                     rows.AddRange(connections.ConnectionList);
                 }
                 else
@@ -170,6 +170,7 @@ namespace SwissTransportApp
             // change the action
             if (rdbSearchConnections.Checked)
             {
+                this.Text = "Verbindungen suchen - ÖV-Applikation";
                 btnSearchConnections.Text = "Verbindungen suchen";
                 lblSelectStartStation.Text = "Startstation auswählen (Autocomp: F1)";
                 pnlSelectEndStation.Enabled = true;
@@ -181,6 +182,7 @@ namespace SwissTransportApp
             }
             else
             {
+                this.Text = "Abfahrten suchen - ÖV-Applikation";
                 btnSearchConnections.Text = "Abfahrten suchen";
                 lblSelectStartStation.Text = "Station auswählen (Autocomp: F1)";
                 pnlSelectEndStation.Enabled = false;
@@ -220,6 +222,12 @@ namespace SwissTransportApp
                 int index = tblOutput.CurrentRow.Index;
                 ConnectionWindow cw = new ConnectionWindow(connections.ConnectionList[index]);
                 cw.ShowDialog(this);
+            }
+            else if(rdbSearchDeparts.Checked && e.KeyCode.Equals(Keys.Enter))
+            {
+                int index = tblOutput.CurrentRow.Index;
+                DepartWindow dw = new DepartWindow(stationBoards.Station, stationBoards.Entries[index]);
+                dw.ShowDialog(this);
             }
             else
             {
