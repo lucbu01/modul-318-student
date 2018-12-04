@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pnlTop = new System.Windows.Forms.Panel();
             this.grbChooseAction = new System.Windows.Forms.GroupBox();
             this.lblSwitchAction = new System.Windows.Forms.Label();
@@ -337,6 +338,7 @@
             this.ClientSize = new System.Drawing.Size(659, 561);
             this.Controls.Add(this.pnlTabSearchConnections);
             this.Controls.Add(this.pnlTop);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(675, 600);

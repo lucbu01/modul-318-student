@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectionWindow));
             this.lblFrom = new System.Windows.Forms.Label();
             this.txbFrom = new System.Windows.Forms.TextBox();
             this.lblDepart = new System.Windows.Forms.Label();
@@ -237,6 +238,7 @@
             this.Controls.Add(this.lblDepart);
             this.Controls.Add(this.txbFrom);
             this.Controls.Add(this.lblFrom);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(723, 182);
             this.MinimumSize = new System.Drawing.Size(723, 182);
