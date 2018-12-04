@@ -172,7 +172,6 @@
             this.lsbSelectStartStation.Name = "lsbSelectStartStation";
             this.lsbSelectStartStation.Size = new System.Drawing.Size(200, 95);
             this.lsbSelectStartStation.TabIndex = 2;
-            this.lsbSelectStartStation.SelectedValueChanged += new System.EventHandler(this.lsbSelectStartStation_SelectedIndexChanged);
             this.lsbSelectStartStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lsbSelectStartStation_KeyDown);
             // 
             // txbSelectStartStation
@@ -210,7 +209,6 @@
             this.lsbSelectEndStation.Name = "lsbSelectEndStation";
             this.lsbSelectEndStation.Size = new System.Drawing.Size(200, 95);
             this.lsbSelectEndStation.TabIndex = 2;
-            this.lsbSelectEndStation.SelectedValueChanged += new System.EventHandler(this.lsbSelectEndStation_SelectedIndexChanged);
             this.lsbSelectEndStation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lsbSelectEndStation_KeyDown);
             // 
             // txbSelectEndStation

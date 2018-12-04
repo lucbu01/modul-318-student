@@ -88,17 +88,11 @@ namespace SwissTransportApp
                 {
                     MessageBox.Show(this, "Die Anzahl maximale Aufrufe pro Tag wurde aufgebraucht!\nPro Tag und IP können nur 1000 Abfragen gemacht werden.", "Anfragen aufgebraucht", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                else
+                {
+                    MessageBox.Show(this, "Bitte überprüfen Sie Ihre Internetverbindung!", "Verbindung überprüfen", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-        }
-
-        private void lsbSelectStartStation_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txbSelectStartStation.Text = Convert.ToString(lsbSelectStartStation.SelectedItem);
-        }
-
-        private void lsbSelectEndStation_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            txbSelectEndStation.Text = Convert.ToString(lsbSelectEndStation.SelectedItem);
         }
 
         private void showStations(TextBox txbSearch, ListBox lsbShow)
@@ -149,9 +143,18 @@ namespace SwissTransportApp
 
         private void lsbSelectStartStation_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode.Equals(Keys.Enter))
+            if (e.KeyCode.Equals(Keys.Enter) || e.KeyCode.Equals(Keys.Escape))
             {
-                txbSelectEndStation.Focus();
+                if (e.KeyCode.Equals(Keys.Enter))
+                {
+                    txbSelectStartStation.Text = Convert.ToString(lsbSelectStartStation.SelectedItem);
+                    txbSelectEndStation.Focus();
+                }
+                else
+                {
+                    txbSelectStartStation.Focus();
+                }
+
                 lsbSelectStartStation.Enabled = false;
                 lsbSelectStartStation.Items.Clear();
                 this.AcceptButton = btnSearchConnections;
@@ -160,15 +163,23 @@ namespace SwissTransportApp
 
         private void lsbSelectEndStation_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode.Equals(Keys.Enter))
+            if (e.KeyCode.Equals(Keys.Enter) || e.KeyCode.Equals(Keys.Escape))
             {
-                if (rdbArrival.Checked)
+                if (e.KeyCode.Equals(Keys.Escape))
                 {
-                    rdbArrival.Focus();
+                    txbSelectEndStation.Focus();
                 }
                 else
                 {
-                    rdbDepart.Focus();
+                    txbSelectEndStation.Text = Convert.ToString(lsbSelectEndStation.SelectedItem);
+                    if (rdbArrival.Checked)
+                    {
+                        rdbArrival.Focus();
+                    }
+                    else
+                    {
+                        rdbDepart.Focus();
+                    }
                 }
 
                 lsbSelectEndStation.Enabled = false;
@@ -181,6 +192,7 @@ namespace SwissTransportApp
         {
             tblOutput.Columns.Clear();
 
+            // change the action
             if (rdbSearchConnections.Checked)
             {
                 btnSearchConnections.Text = "Verbindungen suchen";
@@ -233,6 +245,10 @@ namespace SwissTransportApp
                 int index = tblOutput.CurrentRow.Index;
                 ConnectionWindow cw = new ConnectionWindow(connections.ConnectionList[index]);
                 cw.ShowDialog(this);
+            }
+            else
+            {
+                MainWindow_KeyDown(sender, e);
             }
         }
     }

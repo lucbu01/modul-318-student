@@ -22,7 +22,7 @@ namespace SwissTransportApp
             InitializeComponent();
             this.connection = connection;
             txbProducts.Text = string.Join(", ", connection.products);
-            txbDuration.Text = Duration.parse(connection.Duration).toString();
+            txbDuration.Text = Duration.parse(connection.Duration).userOutput();
             txbFrom.Text = connection.From.Station.Name;
             txbTo.Text = connection.To.Station.Name;
             txbDepart.Text = Convert.ToDateTime(connection.From.Departure).ToString(DATETIME_FORMATTER);
@@ -34,14 +34,19 @@ namespace SwissTransportApp
 
         private void btnViewStartLocation_Click(object sender, EventArgs e)
         {
-            MapWindow mw = new MapWindow(connection.From.Station.Coordinate.XCoordinate, connection.From.Station.Coordinate.YCoordinate);
-            mw.ShowDialog(this);
+            openMapsLink(connection.From.Station.Coordinate);
         }
 
         private void btnViewEndLocation_Click(object sender, EventArgs e)
         {
-            MapWindow mw = new MapWindow(connection.To.Station.Coordinate.XCoordinate, connection.To.Station.Coordinate.YCoordinate);
-            mw.ShowDialog(this);
+            openMapsLink(connection.To.Station.Coordinate);
+        }
+
+        private void openMapsLink(Coordinate coordinate)
+        {
+            string x = Convert.ToString(coordinate.XCoordinate).Replace(",", ".");
+            string y = Convert.ToString(coordinate.YCoordinate).Replace(",", ".");
+            Process.Start("https://www.google.ch/maps/place/" + x + "," + y);
         }
 
         private void ConnectionWindow_KeyDown(object sender, KeyEventArgs e)

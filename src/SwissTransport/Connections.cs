@@ -33,7 +33,7 @@ namespace SwissTransport
         public string[] toRow()
         {
             string departure = Convert.ToDateTime(this.From.Departure).ToString(DATETIME_FORMATTER);
-            string duration = SwissTransport.Duration.parse(this.Duration).toString();
+            string duration = SwissTransport.Duration.parse(this.Duration).userOutput();
             string arrival = Convert.ToDateTime(this.To.Arrival).ToString(DATETIME_FORMATTER);
             return new string[] { departure, duration, arrival };
         }
