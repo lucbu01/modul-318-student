@@ -33,7 +33,6 @@
             this.lblSwitchAction = new System.Windows.Forms.Label();
             this.rdbSearchDeparts = new System.Windows.Forms.RadioButton();
             this.rdbSearchConnections = new System.Windows.Forms.RadioButton();
-            this.pnlBottom = new System.Windows.Forms.Panel();
             this.pnlTabSearchConnections = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlSearchConnections = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlSelectStartStation = new System.Windows.Forms.Panel();
@@ -119,14 +118,6 @@
             this.rdbSearchConnections.UseVisualStyleBackColor = true;
             this.rdbSearchConnections.CheckedChanged += new System.EventHandler(this.grbChooseAction_CheckedChanged);
             // 
-            // pnlBottom
-            // 
-            this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 509);
-            this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(659, 52);
-            this.pnlBottom.TabIndex = 0;
-            // 
             // pnlTabSearchConnections
             // 
             this.pnlTabSearchConnections.AutoScroll = true;
@@ -137,7 +128,7 @@
             this.pnlTabSearchConnections.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlTabSearchConnections.Location = new System.Drawing.Point(0, 49);
             this.pnlTabSearchConnections.Name = "pnlTabSearchConnections";
-            this.pnlTabSearchConnections.Size = new System.Drawing.Size(659, 460);
+            this.pnlTabSearchConnections.Size = new System.Drawing.Size(659, 512);
             this.pnlTabSearchConnections.TabIndex = 2;
             // 
             // pnlSearchConnections
@@ -315,7 +306,7 @@
             this.tblOutput.Location = new System.Drawing.Point(3, 160);
             this.tblOutput.Name = "tblOutput";
             this.tblOutput.ReadOnly = true;
-            this.tblOutput.Size = new System.Drawing.Size(648, 290);
+            this.tblOutput.Size = new System.Drawing.Size(648, 345);
             this.tblOutput.TabIndex = 3;
             this.tblOutput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tblOutput_KeyDown);
             this.tblOutput.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tblOutput_MouseDown);
@@ -345,7 +336,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(659, 561);
             this.Controls.Add(this.pnlTabSearchConnections);
-            this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlTop);
             this.KeyPreview = true;
             this.MaximizeBox = false;
@@ -378,7 +368,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlTop;
-        private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.FlowLayoutPanel pnlTabSearchConnections;
         private System.Windows.Forms.FlowLayoutPanel pnlSearchConnections;
         private System.Windows.Forms.Panel pnlSelectStartStation;
