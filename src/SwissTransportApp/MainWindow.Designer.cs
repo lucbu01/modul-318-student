@@ -350,6 +350,7 @@
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlTop);
             this.KeyPreview = true;
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(675, 600);
             this.MinimumSize = new System.Drawing.Size(675, 600);
             this.Name = "MainWindow";

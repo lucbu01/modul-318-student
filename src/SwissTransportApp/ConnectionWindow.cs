@@ -29,16 +29,19 @@ namespace SwissTransportApp
             txbArrival.Text = Convert.ToDateTime(connection.To.Arrival).ToString(DATETIME_FORMATTER);
             txbDepartPlatform.Text = connection.From.Platform;
             txbArrivalPlatform.Text = connection.To.Platform;
+            Select();
          }
 
         private void btnViewStartLocation_Click(object sender, EventArgs e)
         {
-            new MapWindow(connection.From.Station.Coordinate.XCoordinate, connection.From.Station.Coordinate.YCoordinate).Show();
+            MapWindow mw = new MapWindow(connection.From.Station.Coordinate.XCoordinate, connection.From.Station.Coordinate.YCoordinate);
+            mw.ShowDialog(this);
         }
 
         private void btnViewEndLocation_Click(object sender, EventArgs e)
         {
-            new MapWindow(connection.To.Station.Coordinate.XCoordinate, connection.To.Station.Coordinate.YCoordinate).Show();
+            MapWindow mw = new MapWindow(connection.To.Station.Coordinate.XCoordinate, connection.To.Station.Coordinate.YCoordinate);
+            mw.ShowDialog(this);
         }
 
         private void ConnectionWindow_KeyDown(object sender, KeyEventArgs e)
@@ -50,6 +53,10 @@ namespace SwissTransportApp
             else if (e.KeyCode.Equals(Keys.F2))
             {
                 btnViewEndLocation_Click(sender, e);
+            }
+            else if (e.KeyCode.Equals(Keys.Enter) || e.KeyCode.Equals(Keys.Escape))
+            {
+                Close();
             }
         }
     }

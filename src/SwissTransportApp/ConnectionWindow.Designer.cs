@@ -64,6 +64,7 @@
             this.txbFrom.ReadOnly = true;
             this.txbFrom.Size = new System.Drawing.Size(200, 20);
             this.txbFrom.TabIndex = 2;
+            this.txbFrom.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // lblDepart
             // 
@@ -81,6 +82,7 @@
             this.txbDepart.ReadOnly = true;
             this.txbDepart.Size = new System.Drawing.Size(200, 20);
             this.txbDepart.TabIndex = 3;
+            this.txbDepart.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // lblDepartPlatform
             // 
@@ -98,6 +100,7 @@
             this.txbDepartPlatform.ReadOnly = true;
             this.txbDepartPlatform.Size = new System.Drawing.Size(200, 20);
             this.txbDepartPlatform.TabIndex = 4;
+            this.txbDepartPlatform.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // txbArrivalPlatform
             // 
@@ -105,7 +108,8 @@
             this.txbArrivalPlatform.Name = "txbArrivalPlatform";
             this.txbArrivalPlatform.ReadOnly = true;
             this.txbArrivalPlatform.Size = new System.Drawing.Size(200, 20);
-            this.txbArrivalPlatform.TabIndex = 7;
+            this.txbArrivalPlatform.TabIndex = 8;
+            this.txbArrivalPlatform.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // lblArrivalPlatform
             // 
@@ -122,7 +126,8 @@
             this.txbArrival.Name = "txbArrival";
             this.txbArrival.ReadOnly = true;
             this.txbArrival.Size = new System.Drawing.Size(200, 20);
-            this.txbArrival.TabIndex = 6;
+            this.txbArrival.TabIndex = 7;
+            this.txbArrival.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // lblArrival
             // 
@@ -139,7 +144,8 @@
             this.txbTo.Name = "txbTo";
             this.txbTo.ReadOnly = true;
             this.txbTo.Size = new System.Drawing.Size(200, 20);
-            this.txbTo.TabIndex = 5;
+            this.txbTo.TabIndex = 6;
+            this.txbTo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // lblTo
             // 
@@ -157,6 +163,7 @@
             this.txbProducts.ReadOnly = true;
             this.txbProducts.Size = new System.Drawing.Size(200, 20);
             this.txbProducts.TabIndex = 0;
+            this.txbProducts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // lblProducts
             // 
@@ -174,6 +181,7 @@
             this.txbDuration.ReadOnly = true;
             this.txbDuration.Size = new System.Drawing.Size(200, 20);
             this.txbDuration.TabIndex = 1;
+            this.txbDuration.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // lblDuration
             // 
@@ -189,20 +197,22 @@
             this.btnViewStartLocation.Location = new System.Drawing.Point(12, 110);
             this.btnViewStartLocation.Name = "btnViewStartLocation";
             this.btnViewStartLocation.Size = new System.Drawing.Size(330, 23);
-            this.btnViewStartLocation.TabIndex = 18;
+            this.btnViewStartLocation.TabIndex = 5;
             this.btnViewStartLocation.Text = "Ort anzeigen (F1)";
             this.btnViewStartLocation.UseVisualStyleBackColor = true;
             this.btnViewStartLocation.Click += new System.EventHandler(this.btnViewStartLocation_Click);
+            this.btnViewStartLocation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // btnViewEndLocation
             // 
             this.btnViewEndLocation.Location = new System.Drawing.Point(365, 110);
             this.btnViewEndLocation.Name = "btnViewEndLocation";
             this.btnViewEndLocation.Size = new System.Drawing.Size(330, 23);
-            this.btnViewEndLocation.TabIndex = 19;
+            this.btnViewEndLocation.TabIndex = 9;
             this.btnViewEndLocation.Text = "Ort anzeigen (F2)";
             this.btnViewEndLocation.UseVisualStyleBackColor = true;
             this.btnViewEndLocation.Click += new System.EventHandler(this.btnViewEndLocation_Click);
+            this.btnViewEndLocation.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionWindow_KeyDown);
             // 
             // ConnectionWindow
             // 
@@ -227,6 +237,9 @@
             this.Controls.Add(this.lblDepart);
             this.Controls.Add(this.txbFrom);
             this.Controls.Add(this.lblFrom);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(723, 182);
+            this.MinimumSize = new System.Drawing.Size(723, 182);
             this.Name = "ConnectionWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ÖV-Applikation - Verbindung";

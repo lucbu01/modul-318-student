@@ -218,6 +218,7 @@ namespace SwissTransportApp
 
         private void tblOutput_MouseDown(object sender, MouseEventArgs e)
         {
+        // double click or more
             if (e.Clicks > 1)
             {
                 tblOutput_KeyDown(sender, new KeyEventArgs(Keys.Enter));
@@ -226,10 +227,12 @@ namespace SwissTransportApp
 
         private void tblOutput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (rdbSearchConnections.Checked)
+        // search connections and pressed key enter
+            if (rdbSearchConnections.Checked && e.KeyCode.Equals(Keys.Enter))
             {
                 int index = tblOutput.CurrentRow.Index;
-                new ConnectionWindow(connections.ConnectionList[index]).Show();
+                ConnectionWindow cw = new ConnectionWindow(connections.ConnectionList[index]);
+                cw.ShowDialog(this);
             }
         }
     }

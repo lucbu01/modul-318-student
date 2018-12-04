@@ -72,6 +72,7 @@
             this.Controls.Add(this.wbbShow);
             this.Controls.Add(this.pnlFooter);
             this.Name = "MapWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ÖV-Applikation - Ort ansehen";
             this.pnlFooter.ResumeLayout(false);
             this.ResumeLayout(false);
