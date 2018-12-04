@@ -22,7 +22,7 @@ namespace SwissTransportApp
             InitializeComponent();
             this.connection = connection;
             txbProducts.Text = string.Join(", ", connection.products);
-            txbDuration.Text = Duration.parse(connection.Duration).userOutput();
+            txbDuration.Text = Duration.userOutput(Duration.parse(connection.Duration));
             txbFrom.Text = connection.From.Station.Name;
             txbTo.Text = connection.To.Station.Name;
             txbDepart.Text = Convert.ToDateTime(connection.From.Departure).ToString(DATETIME_FORMATTER);

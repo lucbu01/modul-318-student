@@ -8,30 +8,17 @@ namespace SwissTransport
 {
     public class Duration
     {
-        public int days { get; }
-        public int hours { get; }
-        public int minutes { get; }
-
-        public Duration(int days, int hours, int minutes)
-        {
-            this.days = days;
-            this.hours = hours;
-            this.minutes = minutes;
-        }
 
         /// <summary>
         /// Converts the reponse string "duration" of the SwissTransportAPI
         /// </summary>
         /// <param name="swissTransportFormat"></param>
         /// <returns>Converted Duration</returns>
-        public static Duration parse(String swissTransportFormat)
+        public static TimeSpan parse(string swissTransportFormat)
         {
             try
             {
-                int durationDays = Convert.ToInt32(swissTransportFormat.Substring(0, 2));
-                int durationHours = Convert.ToInt32(swissTransportFormat.Substring(3, 2));
-                int durationMinutes = Convert.ToInt32(swissTransportFormat.Substring(6, 2));
-                return new Duration(durationDays, durationHours, durationMinutes);
+                return TimeSpan.Parse(swissTransportFormat.Replace("d", "."));
             }
             catch (Exception)
             {
@@ -43,20 +30,20 @@ namespace SwissTransport
         /// Converts the duration to a string.
         /// </summary>
         /// <returns>String for GUI Output</returns>
-        public string toString()
+        public static string userOutput(TimeSpan timeSpan)
         {
             List<string> duration = new List<string>();
-            if (days != 0)
+            if (timeSpan.Days != 0)
             {
-                duration.Add(days + " Tage");
+                duration.Add(timeSpan.Days + (timeSpan.Days == 1 ? " Tag" : " Tage"));
             }
-            if (hours != 0)
+            if (timeSpan.Hours != 0)
             {
-                duration.Add(hours + " Stunden");
+                duration.Add(timeSpan.Hours + (timeSpan.Hours == 1 ? " Stunde" : " Stunden"));
             }
-            if (minutes != 0)
+            if (timeSpan.Minutes != 0)
             {
-                duration.Add(minutes + " Minuten");
+                duration.Add(timeSpan.Minutes + (timeSpan.Minutes == 1 ? " Minute" : " Minuten"));
             }
             return string.Join(", ", duration);
         }
