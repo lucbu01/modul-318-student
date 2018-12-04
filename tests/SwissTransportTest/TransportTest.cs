@@ -39,7 +39,7 @@ namespace SwissTransport
         #region self-implemented
 
         [TestMethod]
-        public void searchConnections()
+        public void transport_searchConnections_connections()
         {
             testee = new Transport();
             string stationFrom = "Sursee";
@@ -56,7 +56,7 @@ namespace SwissTransport
         }
 
         [TestMethod]
-        public void searchStationboards()
+        public void transport_searchStationboards_stationBoardRoot()
         {
             testee = new Transport();
             string station = "Sursee";

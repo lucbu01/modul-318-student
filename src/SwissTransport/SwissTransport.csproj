@@ -47,6 +47,8 @@
     <Compile Include="DataGridObject.cs" />
     <Compile Include="Connections.cs" />
     <Compile Include="Duration.cs" />
+    <Compile Include="NoResultsException.cs" />
+    <Compile Include="SearchTextsTooShortException.cs" />
     <Compile Include="StationBoardRoot.cs" />
     <Compile Include="Stations.cs" />
     <Compile Include="ITransport.cs" />

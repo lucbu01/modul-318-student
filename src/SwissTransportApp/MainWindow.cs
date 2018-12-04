@@ -53,53 +53,33 @@ namespace SwissTransportApp
                     string endStation = txbSelectEndStation.Text.Trim();
                     bool isArrival = rdbArrival.Checked;
                     connections = transport.searchConnections(startStation, endStation, 5, departOrArrival, isArrival);
-                    if(connections != null)
-                    {
-                        rows.AddRange(connections.ConnectionList);
-                    }
+                    rows.AddRange(connections.ConnectionList);
                 }
                 else
                 {
                     stationBoards = transport.searchStationboards(startStation, departOrArrival);
-                    if(stationBoards != null)
-                    {
-                        rows.AddRange(stationBoards.Entries);
-                    }
+                    rows.AddRange(stationBoards.Entries);
                 }
 
-                if (rows.Count > 0)
+                foreach (DataGridObject row in rows)
                 {
-                    foreach (DataGridObject row in rows)
-                    {
-                        tblOutput.Rows.Add(row.toRow());
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "Es wurden keine Ergebnisse gefunden!\nBitte passen Sie Ihre Suche an.", "Keine Ergebnisse", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tblOutput.Rows.Add(row.toRow());
                 }
 
                 tblOutput.Focus();
-                this.Cursor = Cursors.Default;
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
-                if(ex.Message.Contains("Too Many Requests"))
-                {
-                    MessageBox.Show(this, "Die Anzahl maximale Aufrufe pro Tag wurde aufgebraucht!\nPro Tag und IP können nur 1000 Abfragen gemacht werden.", "Anfragen aufgebraucht", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    MessageBox.Show(this, "Bitte überprüfen Sie Ihre Internetverbindung!", "Verbindung überprüfen", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                handleException(ex);
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void showStations(TextBox txbSearch, ListBox lsbShow)
         {
             this.Cursor = Cursors.WaitCursor;
             lsbShow.Items.Clear();
-            if (!string.IsNullOrEmpty(txbSearch.Text.Trim()))
+            try
             {
                 Stations stations = transport.GetStations(txbSearch.Text);
 
@@ -109,16 +89,13 @@ namespace SwissTransportApp
                 }
 
                 lsbShow.Enabled = true;
+                this.AcceptButton = null;
                 lsbShow.Focus();
-
-                if (lsbShow.Items.Count > 0)
-                {
-                    lsbShow.SelectedIndex = 0;
-                }
-            }
-            else
+            } catch (Exception ex)
             {
+                handleException(ex);
                 lsbShow.Enabled = false;
+                lsbShow.Items.Clear();
             }
             this.Cursor = Cursors.Default;
         }
@@ -128,7 +105,6 @@ namespace SwissTransportApp
             if (e.KeyCode.Equals(Keys.F1))
             {
                 showStations(txbSelectStartStation, lsbSelectStartStation);
-                this.AcceptButton = null;
             }
         }
 
@@ -137,7 +113,6 @@ namespace SwissTransportApp
             if (e.KeyCode.Equals(Keys.F1))
             {
                 showStations(txbSelectEndStation, lsbSelectEndStation);
-                this.AcceptButton = null;
             }
         }
 
@@ -250,6 +225,58 @@ namespace SwissTransportApp
             {
                 MainWindow_KeyDown(sender, e);
             }
+        }
+
+        enum MessageState { CONNECTION_FAILURE, NO_RESULTS, SEARCH_TOO_SHORT, TOO_MANY_REQUESTS, INTERNET_ERROR }
+        private void showMessageBox(MessageState state)
+        {
+            switch(state)
+            {
+                case MessageState.CONNECTION_FAILURE:
+                    MessageBox.Show(this, "Bitte überprüfen Sie Ihre Internetverbindung!", "Verbindung überprüfen", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case MessageState.NO_RESULTS:
+                    MessageBox.Show(this, "Es wurden keine Ergebnisse gefunden!\nBitte passen Sie Ihre Suche an.", "Keine Ergebnisse", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                case MessageState.SEARCH_TOO_SHORT:
+                    MessageBox.Show(this, "Bitte geben Sie einen genaueren Suchbegriff ein!", "Suche zu kurz", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                case MessageState.TOO_MANY_REQUESTS:
+                    MessageBox.Show(this, "Die Anzahl maximale Aufrufe pro Tag wurde aufgebraucht!\nPro Tag und IP können nur 1000 Abfragen gemacht werden.", "Anfragen aufgebraucht", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case MessageState.INTERNET_ERROR:
+                    MessageBox.Show(this, "Es ist ein Internet Problem aufgetreten!", "Internet Problem", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+        }
+
+        private void handleException(Exception ex)
+        {
+            if (ex.GetType() == typeof(WebException))
+            {
+                WebException webEx = (WebException)ex;
+                if (ex.Message.Contains("Too Many Requests"))
+                {
+                    showMessageBox(MessageState.TOO_MANY_REQUESTS);
+                }
+                else if(webEx.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    showMessageBox(MessageState.CONNECTION_FAILURE);
+                }
+                else
+                {
+                    showMessageBox(MessageState.INTERNET_ERROR);
+                }
+            }
+            else if (ex.GetType() == typeof(NoResultsException))
+            {
+                showMessageBox(MessageState.NO_RESULTS);
+            }
+            else if (ex.GetType() == typeof(SearchTextsTooShortException))
+            {
+                showMessageBox(MessageState.SEARCH_TOO_SHORT);
+            }
+
         }
     }
 }

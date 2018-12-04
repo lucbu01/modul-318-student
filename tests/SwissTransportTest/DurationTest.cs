@@ -7,7 +7,7 @@ namespace SwissTransport
     public class DurationTest
     {
         [TestMethod]
-        public void apiDuration_parse_durationWithoutSeconds()
+        public void apiDuration_parse_timeSpan()
         {
             string apiDuration = "02d05:33:33";
 

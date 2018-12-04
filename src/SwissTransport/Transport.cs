@@ -10,18 +10,28 @@ namespace SwissTransport
     {
         public Stations GetStations(string query)
         {
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/locations?query=" + query);
-            var response = request.GetResponse();
-            var responseStream = response.GetResponseStream();
-
-            if (responseStream != null)
+            if (!string.IsNullOrWhiteSpace(query))
             {
-                var message = new StreamReader(responseStream).ReadToEnd();
-                var stations = JsonConvert.DeserializeObject<Stations>(message , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                return stations;
-            }
+                var request = CreateWebRequest("http://transport.opendata.ch/v1/locations?query=" + query);
+                var response = request.GetResponse();
+                var responseStream = response.GetResponseStream();
 
-            return null;
+                try
+                {
+                    var message = new StreamReader(responseStream).ReadToEnd();
+                    var stations = JsonConvert.DeserializeObject<Stations>(message, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    if (stations.StationList.Count > 0)
+                    {
+                        return stations;
+                    }
+                    throw new Exception();
+                }
+                catch (Exception)
+                {
+                    throw new NoResultsException();
+                }
+            }
+            throw new SearchTextsTooShortException();
         }
 
         /// <summary>
@@ -38,14 +48,20 @@ namespace SwissTransport
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 
-            if (responseStream != null)
+            try
             {
                 var readToEnd = new StreamReader(responseStream).ReadToEnd();
                 var stationboard = JsonConvert.DeserializeObject<StationBoardRoot>(readToEnd);
-                return stationboard;
+                if (stationboard.Entries.Count > 0)
+                {
+                    return stationboard;
+                }
+                throw new Exception();
             }
-
-            return null;
+            catch (Exception)
+            {
+                throw new NoResultsException();
+            }
         }
 
         #region self-implemented
@@ -57,9 +73,13 @@ namespace SwissTransport
         /// <returns>stationBoardRoot</returns>
         public StationBoardRoot searchStationboards(string station, DateTime dateAndTime)
         {
-            List<string[]> rows = new List<string[]>();
-            string datetime = "datetime=" + dateAndTime.ToString(@"yyyy-MM-dd HH:mm");
-            return GetStationBoard(station, datetime);
+            if (!string.IsNullOrWhiteSpace(station))
+            {
+                List<string[]> rows = new List<string[]>();
+                string datetime = "datetime=" + dateAndTime.ToString(@"yyyy-MM-dd HH:mm");
+                return GetStationBoard(station, datetime);
+            }
+            throw new SearchTextsTooShortException();
         }
         #endregion
 
@@ -78,15 +98,20 @@ namespace SwissTransport
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 
-            if (responseStream != null)
+            try
             {
                 var readToEnd = new StreamReader(responseStream).ReadToEnd();
-                var connections =
-                    JsonConvert.DeserializeObject<Connections>(readToEnd);
-                return connections;
+                var connections = JsonConvert.DeserializeObject<Connections>(readToEnd);
+                if (connections.ConnectionList.Count > 0)
+                {
+                    return connections;
+                }
+                throw new Exception();
             }
-
-            return null;
+            catch (Exception)
+            {
+                throw new NoResultsException();
+            }
         }
 
         private static WebRequest CreateWebRequest(string url)
@@ -113,7 +138,7 @@ namespace SwissTransport
         public Connections searchConnections(string startStation, string endStation, int numberOfRows, DateTime departOrArrival, bool isArrival)
         {
             // prevent unnecessary calls
-            if (!string.IsNullOrEmpty(startStation) && !string.IsNullOrEmpty(endStation) && numberOfRows != 0 && departOrArrival != null)
+            if (!string.IsNullOrWhiteSpace(startStation) && !string.IsNullOrWhiteSpace(endStation) && numberOfRows != 0 && departOrArrival != null)
             {
                 string limit = "limit=" + numberOfRows;
                 string date = "date=" + departOrArrival.ToString(@"yy-MM-dd");
@@ -121,7 +146,7 @@ namespace SwissTransport
                 string isArrivalTime = "isArrivalTime=" + (isArrival ? "1" : "0");
                 return GetConnections(startStation, endStation, limit, date, time, isArrivalTime);
             }
-            return null;
+            throw new SearchTextsTooShortException();
         }
         #endregion
     }
