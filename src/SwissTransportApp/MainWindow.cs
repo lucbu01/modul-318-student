@@ -52,7 +52,7 @@ namespace SwissTransportApp
                 {
                     string endStation = txbSelectEndStation.Text.Trim();
                     bool isArrival = rdbArrival.Checked;
-                    connections = transport.searchConnections(startStation, endStation, 5, departOrArrival, isArrival);
+                    connections = transport.searchConnections(startStation, endStation, 10, departOrArrival, isArrival);
                     rows.AddRange(connections.ConnectionList);
                 }
                 else
